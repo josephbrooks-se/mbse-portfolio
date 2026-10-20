@@ -17,17 +17,19 @@ Zero-Trust authentication and authorization, information provenance, configurati
 
 ## 2.2 Stakeholders, Actors & Roles
 The following roles are conceptual and may be performed by individuals, teams, or constituent systems. They do not imply a specific organizational structure.
-Actor / stakeholder	Primary responsibility	MESA interaction
-Mission analyst	Discover information, initiate analysis, evaluate results	Searches catalog, submits tasks, reviews outputs
-Mission decision-maker	Consume approved mission products	Receives authorized reports and decision-support outputs
-Collection-system owner	Operate and maintain a constituent collection system	Provides approved interfaces and source data availability
-Data integration engineer	Configure and maintain ingestion integrations	Manages adapters, mappings, and integration health
-Data steward	Define metadata, schema, and quality rules	Governs validation, catalog registration, and lineage
-Workflow designer / operator	Configure approved processing workflows	Defines templates, monitors execution, handles exceptions
-Security administrator / policy authority	Manage identities, access policies, and audit controls	Governs ICAM, policy decisions, and security monitoring
-Report author / approver	Compose, review, approve, and release products	Uses reporting workflows and dissemination controls
-SoS architect / configuration authority	Maintain architectural integrity and baselines	Reviews interfaces, dependencies, changes, and traceability
-DevSecOps / operations engineer	Deploy, observe, recover, and sustain enterprise services	Manages releases, telemetry, incident response, and rollback
+
+| Actor / stakeholder |	Primary responsibility | 	MESA interaction |
+| --- | --- | ---| 
+| Mission analyst |	Discover information, initiate analysis, evaluate results |	Searches catalog, submits tasks, reviews outputs |
+| Mission decision-maker |	Consume approved mission products |	Receives authorized reports and decision-support outputs |
+| Collection-system owner |	Operate and maintain a constituent collection system |	Provides approved interfaces and source data availability |
+| Data integration engineer |	Configure and maintain ingestion integrations	| Manages adapters, mappings, and integration health |
+| Data steward	| Define metadata, schema, and quality rules	| Governs validation, catalog registration, and lineage |
+| Workflow designer / operator |	Configure approved processing workflows |	Defines templates, monitors execution, handles exceptions |
+| Security administrator / policy authority |	Manage identities, access policies, and audit controls |	Governs ICAM, policy decisions, and security monitoring |
+| Report author / approver |	Compose, review, approve, and release products	| Uses reporting workflows and dissemination controls |
+| SoS architect / configuration authority |	Maintain architectural integrity and baselines |	Reviews interfaces, dependencies, changes, and traceability |
+| DevSecOps / operations engineer	| Deploy, observe, recover, and sustain enterprise services |	Manages releases, telemetry, incident response, and rollback |
 
 External systems and dependencies: independently governed collection systems; enterprise identity and policy services; approved storage and compute platforms; authorized downstream dissemination endpoints. MESA does not assume ownership of their internal implementations.
 
@@ -82,14 +84,15 @@ Boundary interpretation: MESA owns the conceptual enterprise integration respons
 
 ## 2.5 Operational Constraints & Assumptions
 Constraints
-ID	Constraint
-CON-01	Constituent systems retain independent operational and lifecycle authority.
-CON-02	Integration must use approved interfaces and must not require redesign of source internals as a baseline assumption.
-CON-03	Protected information must be accessed and exchanged only under applicable identity, authorization, marking, and handling policies.
-CON-04	Data schemas, API contracts, and event contracts must be governed and version controlled.
-CON-05	Analytical products requiring human review or release authorization must not bypass those controls.
-CON-06	The conceptual architecture must remain vendor-neutral unless a later trade study establishes a justified selection.
-CON-07	Operational availability, throughput, latency, and recovery thresholds must be approved by stakeholders before detailed design acceptance.
+| ID |	Constraint |
+| --- | --- |
+| CON-01 |	Constituent systems retain independent operational and lifecycle authority. |
+| CON-02 |	Integration must use approved interfaces and must not require redesign of source internals as a baseline assumption. |
+| CON-03 |	Protected information must be accessed and exchanged only under applicable identity, authorization, marking, and handling policies. |
+| CON-04	| Data schemas, API contracts, and event contracts must be governed and version controlled. |
+| CON-05	| Analytical products requiring human review or release authorization must not bypass those controls. |
+| CON-06	| The conceptual architecture must remain vendor-neutral unless a later trade study establishes a justified selection. |
+| CON-07	| Operational availability, throughput, latency, and recovery thresholds must be approved by stakeholders before detailed design acceptance. |
 
 
 Assumptions requiring validation
@@ -119,17 +122,18 @@ Measures of Effectiveness evaluate whether MESA improves the mission outcome. Su
 | MOE-08 |	Timely delivery of approved analytical products |	Elapsed time from workflow request to approved dissemination |	End-to-end mission thread assessment |	TBD |
 
 
-Measurement governance: For each MOE, the eventual baseline shall define its operational conditions, measurement start and stop events, data source, calculation method, owner, and acceptance threshold. 
+Measurement governance: For each MOE, the eventual baseline shall define its operational conditions, measurement start and stop events, data source, calculation method, owner, and acceptance threshold. Illustrative test results must not be presented as demonstrated operational performance.
 
-Illustrative test results must not be presented as demonstrated operational performance.
-CONOPS-to-Architecture Traceability (Initial Mapping)
-CONOPS element	Related MESA requirement families	Planned architecture artifacts
-Secure source integration and ingestion	R-020, R-030, R-040, R-060	BDD-001, IBD-001, IBD-004
-Catalog registration and authorized discovery	R-010, R-040, R-050	IBD-001, DAT-001, IFC-001
-Automated workflows and analytics	R-010, R-020, R-070	ACT-001, ACT-003, ACT-004
-Report review and dissemination	R-080, R-060	ACT-004, IBD-001
-Failure detection and recovery	R-060, R-070, R-090	ACT-005, VER-001
-Model governance and architecture evolution	R-100, R-110, R-120	BDD-002, TRC-001
+### CONOPS-to-Architecture Traceability (Initial Mapping)
+
+| CONOPS element |	Related MESA requirement families |	Planned architecture artifacts |
+| --- | --- | --- |
+| Secure source integration and ingestion |	R-020, R-030, R-040, R-060 |	BDD-001, IBD-001, IBD-004 |
+| Catalog registration and authorized discovery	| R-010, R-040, R-050	| IBD-001, DAT-001, IFC-001 |
+| Automated workflows and analytics |	R-010, R-020, R-070 |	ACT-001, ACT-003, ACT-004 |
+| Report review and dissemination |	R-080, R-060 |	ACT-004, IBD-001 |
+| Failure detection and recovery |	R-060, R-070, R-090 |	ACT-005, VER-001 |
+| Model governance and architecture evolution |	R-100, R-110, R-120 |	BDD-002, TRC-001 |
 
 
 Review gates before baseline approval: Confirm actor responsibilities with stakeholders; validate operational scenarios and system boundary; assign owners to constraints and assumptions; establish approved MOE targets; and reconcile the mapping with the formal requirements and model baselines.
