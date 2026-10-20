@@ -28,7 +28,7 @@ A scalable, secure, and governable architecture that improves mission informatio
 
 # 1.2 Problem Statement & Mission Need
 
-# Problem Statement
+Problem Statement
 Mission organizations frequently depend on independently developed and managed collection systems, analytical applications, and information repositories that were not originally designed for enterprise-wide interoperability.
 Differences in interface standards, data formats, security implementations, processing workflows, and system lifecycles can create fragmented information environments. These conditions increase integration complexity, introduce manual processing dependencies, limit information discoverability, and complicate end-to-end traceability.
 Traditional point-to-point integrations may further increase architectural coupling, requiring substantial coordination when systems are modified, replaced, or expanded.
@@ -124,7 +124,7 @@ Enterprise object storage and data catalog services provide persistent informati
 Zero-Trust security principles govern user, service, and data interactions.
 Operational observability, configuration management, and provenance capabilities provide mechanisms to monitor system behavior, manage architectural evolution, and preserve information traceability.
 
-#Systems Engineering Methodology
+# Systems Engineering Methodology
 The architecture follows a mission-driven engineering methodology:
 Mission Need → CONOPS → Requirements → Architecture Trade Study → Logical Architecture → Interface and Behavioral Models → Capability Roadmap → Verification
 This methodology establishes traceability between mission needs, technical requirements, architectural decisions, system components, and verification activities.
