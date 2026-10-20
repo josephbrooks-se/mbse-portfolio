@@ -112,7 +112,7 @@ Measures of Effectiveness evaluate whether MESA improves the mission outcome. Su
 | MOE-01 |	Faster availability of usable mission information | Elapsed time from source availability to catalog discoverability |	Timed end-to-end operational scenario |	TBD by stakeholders |
 | MOE-02	| Reduced manual integration and processing effort |	Human interventions per completed processing workflow	Compare baseline and proposed workflow execution |	TBD |
 | MOE-03 |	Improved information discoverability |	Proportion of eligible governed assets discoverable by authorized users	| Catalog coverage and user task testing |	TBD |
-| MOE-04	| Greater end-to-end traceability	Proportion of sampled analytical products with complete source-to-output lineage |	Provenance audit and traceability inspection |	TBD |
+| MOE-04	| Greater end-to-end traceability |	Proportion of sampled analytical products with complete source-to-output lineage |	Provenance audit and traceability inspection |	TBD |
 | MOE-05 |	Reliable mission workflow completion |	Proportion of valid workflows completed within approved operating conditions |	Representative load and failure-recovery exercises |	TBD |
 | MOE-06 |	Faster incorporation of new constituent sources |	Effort and elapsed time to integrate a conformant new source |	Controlled integration demonstration |	TBD |
 | MOE-07 |	Effective protection of mission information |	Unauthorized access attempts correctly denied without data disclosure |	Security validation and negative testing |	Approved security acceptance criteria |
