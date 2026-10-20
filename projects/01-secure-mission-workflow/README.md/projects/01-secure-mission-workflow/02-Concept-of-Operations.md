@@ -93,29 +93,35 @@ CON-07	Operational availability, throughput, latency, and recovery thresholds mu
 
 
 Assumptions requiring validation
-ID	Assumption	Validation needed
-ASM-01	Constituent systems can expose an approved data interface or be integrated through an authorized adapter.	Source-system interface assessment
-ASM-02	Enterprise identity and policy services are available for integration.	Security architecture review
-ASM-03	Enterprise storage and compute environments can support the intended processing workloads.	Capacity and performance assessment
-ASM-04	Data stewards can define common metadata and transformation rules for participating sources.	Data governance workshops
-ASM-05	Mission workflows can be decomposed into repeatable tasks with explicit human approval gates.	Operational scenario validation
-ASM-06	Relevant operational events can be retained or replayed under approved retention and handling rules.	Messaging and records-management review
+| ID |	Assumption |	Validation needed |
+| --- | --- | --- |
+| ASM-01 |	Constituent systems can expose an approved data interface or be integrated through an authorized adapter. |	Source-system interface assessment |
+| ASM-02	| Enterprise identity and policy services are available for integration. |	Security architecture review |
+| ASM-03 |	Enterprise storage and compute environments can support the intended processing workloads. |	Capacity and performance assessment |
+| ASM-04 |	Data stewards can define common metadata and transformation rules for participating sources. |	Data governance workshops |
+| ASM-05 |	Mission workflows can be decomposed into repeatable tasks with explicit human approval gates. |	Operational scenario validation |
+| ASM-06 |	Relevant operational events can be retained or replayed under approved retention and handling rules. |	Messaging and records-management review |
+
 
 
 ## 2.6 Measures of Effectiveness (MOEs)
 Measures of Effectiveness evaluate whether MESA improves the mission outcome. Supporting Measures of Performance (MOPs) and technical performance measures (TPMs) will be derived during requirements and verification planning. No numerical targets are asserted in this conceptual baseline.
-MOE ID	Mission outcome	Candidate measure	Evaluation approach	Target
-MOE-01	Faster availability of usable mission information	Elapsed time from source availability to catalog discoverability	Timed end-to-end operational scenario	TBD by stakeholders
-MOE-02	Reduced manual integration and processing effort	Human interventions per completed processing workflow	Compare baseline and proposed workflow execution	TBD
-MOE-03	Improved information discoverability	Proportion of eligible governed assets discoverable by authorized users	Catalog coverage and user task testing	TBD
-MOE-04	Greater end-to-end traceability	Proportion of sampled analytical products with complete source-to-output lineage	Provenance audit and traceability inspection	TBD
-MOE-05	Reliable mission workflow completion	Proportion of valid workflows completed within approved operating conditions	Representative load and failure-recovery exercises	TBD
-MOE-06	Faster incorporation of new constituent sources	Effort and elapsed time to integrate a conformant new source	Controlled integration demonstration	TBD
-MOE-07	Effective protection of mission information	Unauthorized access attempts correctly denied without data disclosure	Security validation and negative testing	Approved security acceptance criteria
-MOE-08	Timely delivery of approved analytical products	Elapsed time from workflow request to approved dissemination	End-to-end mission thread assessment	TBD
+
+|MOE ID	| Mission outcome |	Candidate measure	| Evaluation approach |	Target
+| --- | --- | --- |
+| MOE-01 |	Faster availability of usable mission information | Elapsed time from source availability to catalog discoverability |	Timed end-to-end operational scenario |	TBD by stakeholders |
+| MOE-02	| Reduced manual integration and processing effort |	Human interventions per completed processing workflow	Compare baseline and proposed workflow execution |	TBD |
+| MOE-03 |	Improved information discoverability |	Proportion of eligible governed assets discoverable by authorized users	| Catalog coverage and user task testing |	TBD |
+| MOE-04	| Greater end-to-end traceability	Proportion of sampled analytical products with complete source-to-output lineage |	Provenance audit and traceability inspection |	TBD |
+| MOE-05 |	Reliable mission workflow completion |	Proportion of valid workflows completed within approved operating conditions |	Representative load and failure-recovery exercises |	TBD |
+| MOE-06 |	Faster incorporation of new constituent sources |	Effort and elapsed time to integrate a conformant new source |	Controlled integration demonstration |	TBD |
+| MOE-07 |	Effective protection of mission information |	Unauthorized access attempts correctly denied without data disclosure |	Security validation and negative testing |	Approved security acceptance criteria |
+| MOE-08 |	Timely delivery of approved analytical products	Elapsed time from workflow request to approved dissemination |	End-to-end mission thread assessment |	TBD |
 
 
-Measurement governance: For each MOE, the eventual baseline shall define its operational conditions, measurement start and stop events, data source, calculation method, owner, and acceptance threshold. Illustrative test results must not be presented as demonstrated operational performance.
+Measurement governance: For each MOE, the eventual baseline shall define its operational conditions, measurement start and stop events, data source, calculation method, owner, and acceptance threshold. 
+
+Illustrative test results must not be presented as demonstrated operational performance.
 CONOPS-to-Architecture Traceability (Initial Mapping)
 CONOPS element	Related MESA requirement families	Planned architecture artifacts
 Secure source integration and ingestion	R-020, R-030, R-040, R-060	BDD-001, IBD-001, IBD-004
