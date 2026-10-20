@@ -264,6 +264,7 @@ Coverage note: This is an initial traceability sample, not a complete 48-row ver
 
 ### Baseline Control and Open Actions
 | Action ID |	Required action |	Exit criterion	| Status |
+| --- | --- | --- | --- |
 | REQ-A01 |	Validate stakeholder needs against CONOPS |	Reviewed needs and assumptions |	Open |
 | REQ-A02 |	Reconcile identifiers against all prior models |	No reused or conflicting requirement IDs |	Open |
 | REQ-A03 |	Define thresholds, environments, and operating conditions |	Verifiable Level 2 wording |	Open |
