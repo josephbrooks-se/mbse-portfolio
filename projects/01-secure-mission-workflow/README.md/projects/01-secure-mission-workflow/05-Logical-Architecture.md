@@ -123,8 +123,8 @@ Interpretation: Solid arrows indicate representative operational dependencies or
 | ICAM / Zero Trust (SYS-021, SYS-040)	| Security authority	| Identity attributes, policy decisions	| Trusted identity and policy stores |
 | Reporting (SYS-080)	| Reporting capability owner	| Report state and release records	| Mission applications, catalog, policy |
 | Observability (SYS-050)	| Operations owner	| Telemetry and alert records	| Instrumented services |
-| DevSecOps / Runtime (SYS-060, SYS-070)	| Platform engineering	| Deployment state and infrastructure	Configuration baselines |
-| Configuration / Analytics (SYS-110, SYS-120)	| Architecture and CM authority	| Approved baseline and model correlation	CM records, telemetry |
+| DevSecOps / Runtime (SYS-060, SYS-070)	| Platform engineering	| Deployment state and infrastructure	| Configuration baselines |
+| Configuration / Analytics (SYS-110, SYS-120)	| Architecture and CM authority	| Approved baseline and model correlation	| CM records, telemetry |
 
 
 Design principle: An authoritative service owns its state. Other services access that state through governed APIs or consume approved change events; they do not write directly into another service's internal database.
