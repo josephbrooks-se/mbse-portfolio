@@ -1,4 +1,4 @@
-#2. Concept of Operations (CONOPS)
+# 2. Concept of Operations (CONOPS)
 Project: MESA — Mission Enterprise Services Architecture
 Document ID: MESA-CONOPS-001
 Version: 0.1 — Conceptual Draft
@@ -6,7 +6,7 @@ Status: Draft for architecture review
 Classification: Fictional, unclassified portfolio example
 Portfolio disclaimer: Project MESA is an independently developed, hypothetical System-of-Systems (SoS) reference architecture. Its actors, interfaces, scenarios, and performance measures are illustrative and do not describe an actual government program, operational environment, or approved design.
 
-##2.1 Operational Concept Statement
+## 2.1 Operational Concept Statement
 Project MESA enables authorized mission personnel to discover, process, analyze, review, and disseminate mission information originating from independently managed collection systems and enterprise data sources. The SoS coordinates information exchange through governed interfaces while preserving the autonomy of constituent systems.
 
 During normal operations, a constituent system makes information available through an approved interface and publishes, or causes an integration adapter to publish, a data-availability event. Authorized ingestion services retrieve or receive the information, validate its structure and required metadata, perform approved transformations, and persist the resulting data in enterprise storage. A catalog service registers discoverable metadata and references to the stored object. Following successful registration, a governed event can notify interested workflow services that the information is available.
@@ -15,7 +15,7 @@ Authorized mission users interact with mission applications to search the catalo
 
 Zero-Trust authentication and authorization, information provenance, configuration control, and operational observability apply throughout the operational thread. During partial failures, the SoS uses defined retry, isolation, reconciliation, and recovery procedures to preserve data integrity and prevent unauthorized access. The intended result is faster, more consistent delivery of traceable mission information, subject to validation against stakeholder-approved measures.
 
-##2.2 Stakeholders, Actors & Roles
+## 2.2 Stakeholders, Actors & Roles
 The following roles are conceptual and may be performed by individuals, teams, or constituent systems. They do not imply a specific organizational structure.
 Actor / stakeholder	Primary responsibility	MESA interaction
 Mission analyst	Discover information, initiate analysis, evaluate results	Searches catalog, submits tasks, reviews outputs
@@ -31,9 +31,9 @@ DevSecOps / operations engineer	Deploy, observe, recover, and sustain enterprise
 
 External systems and dependencies: independently governed collection systems; enterprise identity and policy services; approved storage and compute platforms; authorized downstream dissemination endpoints. MESA does not assume ownership of their internal implementations.
 
-##2.3 Operational Scenarios & Mission Threads
+## 2.3 Operational Scenarios & Mission Threads
 
-###Scenario A — Nominal collection-to-analysis-to-report thread
+### Scenario A — Nominal collection-to-analysis-to-report thread
 Trigger: An authorized collection system makes a new observation available.
 Preconditions: The source interface and event contract are approved; required identities, policies, schemas, and storage services are available.
 1. Source notification: The collection system or approved adapter emits an event containing a source identifier, observation reference, event identifier, timestamp, and applicable metadata—not necessarily the full payload.
@@ -48,7 +48,7 @@ Preconditions: The source interface and event contract are approved; required id
 10. Dissemination: The approved product is delivered to authorized recipients, and the SoS retains required audit and provenance records.
 Postconditions: An approved product is available to authorized recipients; source-to-product lineage and workflow status are queryable by authorized personnel.
 
-###Scenario B — Invalid or incomplete source data
+### Scenario B — Invalid or incomplete source data
 Trigger: Ingested information fails schema, metadata, or policy validation.
 1. The validation service records a reason code and correlation identifier.
 2. The invalid object is rejected or isolated in an access-controlled quarantine area, according to policy.
@@ -57,7 +57,7 @@ Trigger: Ingested information fails schema, metadata, or policy validation.
 5. Authorized personnel correct the source, mapping, or schema issue and initiate controlled reprocessing when permitted.
 Expected outcome: Invalid information does not enter the approved analytical path; the exception remains traceable.
 
-###Scenario C — Partial service failure and recovery
+### Scenario C — Partial service failure and recovery
 Trigger: The event broker, processing service, catalog, or downstream analytical capability becomes temporarily unavailable.
 1. Monitoring detects the failure and correlates affected transactions or workflows.
 2. Durable messaging or persisted workflow state retains recoverable work where configured.
@@ -67,7 +67,7 @@ Trigger: The event broker, processing service, catalog, or downstream analytical
 6. The workflow resumes from an approved checkpoint or is explicitly marked failed for operator intervention.
 Expected outcome: The SoS preserves applicable security and data-integrity constraints while restoring service within approved recovery objectives.
 
-###Scenario D — Unauthorized access attempt
+### Scenario D — Unauthorized access attempt
 Trigger: A user or workload requests a protected service, topic, or data object without the necessary authorization.
 1. The relevant enforcement point validates identity and evaluates the applicable access policy.
 2. The unauthorized request is denied without disclosing protected content.
@@ -75,12 +75,12 @@ Trigger: A user or workload requests a protected service, topic, or data object 
 4. Other authorized processing continues unless an approved incident-response action requires restriction.
 Expected outcome: Access controls remain effective across synchronous APIs, event subscriptions, and data retrieval interfaces.
 
-##2.4 System Context Diagram
+## 2.4 System Context Diagram
 The diagram defines the operational boundary, not the internal implementation of every constituent system. Mermaid renders directly in supported GitHub Markdown views.
 
 Boundary interpretation: MESA owns the conceptual enterprise integration responsibilities shown within the boundary. Collection systems, identity/policy authorities, recipients, and external dissemination endpoints may remain under separate governance. Trust and authorization decisions must be enforced at each protected interaction; the diagram does not imply that all traffic passes through one security service.
 
-##2.5 Operational Constraints & Assumptions
+## 2.5 Operational Constraints & Assumptions
 Constraints
 ID	Constraint
 CON-01	Constituent systems retain independent operational and lifecycle authority.
@@ -102,7 +102,7 @@ ASM-05	Mission workflows can be decomposed into repeatable tasks with explicit h
 ASM-06	Relevant operational events can be retained or replayed under approved retention and handling rules.	Messaging and records-management review
 
 
-##2.6 Measures of Effectiveness (MOEs)
+## 2.6 Measures of Effectiveness (MOEs)
 Measures of Effectiveness evaluate whether MESA improves the mission outcome. Supporting Measures of Performance (MOPs) and technical performance measures (TPMs) will be derived during requirements and verification planning. No numerical targets are asserted in this conceptual baseline.
 MOE ID	Mission outcome	Candidate measure	Evaluation approach	Target
 MOE-01	Faster availability of usable mission information	Elapsed time from source availability to catalog discoverability	Timed end-to-end operational scenario	TBD by stakeholders
