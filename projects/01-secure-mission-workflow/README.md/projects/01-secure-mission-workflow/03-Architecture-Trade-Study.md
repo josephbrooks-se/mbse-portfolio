@@ -97,24 +97,28 @@ Decision gate: Proceed with A5 as the conceptual reference architecture, subject
 MESA selects a hybrid Event-Driven / Publish–Subscribe and Service-Oriented / Microservices Architecture. Event-driven communication will support collection notifications, data availability, asynchronous processing, workflow triggers, and completion notifications. Modular enterprise services will implement ingestion, validation, catalog integration, workflow management, analytics, provenance, mission applications, and report authoring. Synchronous governed APIs will support explicit commands, authoritative queries, and transactions requiring immediate results.
 
 The selected approach seeks to preserve constituent-system autonomy while establishing consistent enterprise interoperability, security, and information traceability. Microservices describe how capabilities are organized and deployed; publish–subscribe describes how relevant events are exchanged. A microservice may publish and consume events; the two patterns are complementary.
-Initial service communication allocation
-Service / component	Primary implementation or interface style	Event role	Representative interaction
-SYS-030 Mission Applications	Governed APIs and modular application services	Consumer / publisher	Submit mission task; receive status-complete event
-SYS-022 Ingestion & Interoperability	Containerized adapters and validation services	Consumer / publisher	Receive source notification; publish validated-data event
-SYS-023 Workflow Orchestration	Stateful workflow service and APIs	Consumer / publisher	Start task on approved event; publish task outcome
-SYS-011 Enterprise Data Catalog	Authoritative catalog APIs	Publisher / consumer	Register metadata transactionally; publish asset-registered event
-SYS-012 Object Storage	Managed storage interface	Event source where supported	Store object; emit object-created notification
-SYS-024 Analytics & AI	Independently deployable processing services	Consumer / publisher	Consume work item; publish result availability
-SYS-025 Provenance & Evidence	Provenance APIs and durable records	Consumer	Capture processing evidence and lineage
-SYS-021 ICAM / SYS-040 Zero Trust	Synchronous policy and identity enforcement	Limited lifecycle/audit events	Authorize protected request before access
-SYS-080 Report Authoring	Governed authoring and approval APIs	Publisher	Publish report-approved event after authorization
-SYS-050 Observability	Telemetry collection and analysis	Consumer	Correlate logs, metrics, and traces
-SYS-110 Configuration Management	Controlled baseline APIs	Publisher	Announce approved configuration baseline
-SYS-120 Digital Twin / Architecture Analytics	Model and analysis services	Consumer	Reconcile approved state changes with architecture model
+
+### Initial service communication allocation
+
+| Service / component |	Primary implementation or interface style |	Event role | Representative interaction |
+| --- | --- | --- |--- |
+| SYS-030 Mission Applications | Governed APIs and modular application services | Consumer / publisher | Submit mission task; receive status-complete event |
+| SYS-022 Ingestion & Interoperability | Containerized adapters and validation services | Consumer / publisher | Receive source notification; publish validated-data event |
+| SYS-023 Workflow Orchestration |	Stateful workflow service and APIs | Consumer / publisher |	Start task on approved event; publish task outcome |
+| SYS-011 Enterprise Data Catalog |	Authoritative catalog APIs | Publisher / consumer |	Register metadata transactionally; publish asset-registered event |
+| SYS-012 Object Storage |	Managed storage interface |	Event source where supported | Store object; emit object-created notification |
+| SYS-024 Analytics & AI |	Independently deployable processing services |	Consumer / publisher |	Consume work item; publish result availability |
+| SYS-025 Provenance & Evidence | Provenance APIs and durable records |	Consumer |	Capture processing evidence and lineage |
+| SYS-021 ICAM / SYS-040 Zero Trust | Synchronous policy and identity enforcement |	Limited lifecycle/audit events | Authorize protected request before access |
+| SYS-080 Report Authoring | Governed authoring and approval APIs |	Publisher |	Publish report-approved event after authorization |
+| SYS-050 Observability | Telemetry collection and analysis | Consumer | Correlate logs, metrics, and traces |
+| SYS-110 Configuration Management | Controlled baseline APIs |	Publisher |	Announce approved configuration baseline |
+| SYS-120 Digital Twin / Architecture | Analytics |	Model and analysis services | Consumer | Reconcile approved state changes with architecture model |
 
 
 Interaction rule: Publish facts about completed state changes as events. Use a command/API when a specific service must accept responsibility for an action. Use bulk/object transfer for large payloads; events can carry references and metadata rather than the entire dataset.
-Logical interaction view
+
+### Logical interaction view
 ```mermaid
 flowchart TD
     CS[Constituent Collection Systems] -->|Approved source interface| ING[Ingestion Services]
@@ -142,48 +146,55 @@ flowchart TD
 ```
 The diagram is a logical communication view, not a complete deployment design. Dashed lines denote cross-cutting relationships, not an assertion that security checks or provenance are optional. Protected interfaces require authorization even when an event notification has been received.
 
-3.6 Decision Risks, Mitigations & Architecture Decision Record
-Principal risks and controls
-Risk ID	Risk / failure mode	Consequence	Mitigation / design control	Verification evidence
-AR-01	Duplicate or replayed events	Repeated processing / inconsistent results	Event IDs, idempotent consumers, deduplication policy	Duplicate-delivery integration test
-AR-02	Out-of-order delivery	Invalid workflow state	Partitioning/sequence policy where needed, state-machine guards	Reordering and concurrency test
-AR-03	Broker or subscriber outage	Delayed mission processing	Durable queues, replicated broker deployment, backpressure, replay	Failover and backlog-drain test
-AR-04	Partial storage/catalog transaction	Uncataloged or stale assets	Reconciliation workflow, transactional outbox where appropriate, compensating actions	Partial-failure recovery test
-AR-05	API/event schema incompatibility	Broken consumers	Versioned contracts, compatibility rules, consumer contract tests	Contract regression test
-AR-06	Distributed latency / cascading failures	Unavailable workflows	Timeouts, bounded retries, circuit breakers, bulkheads	Load and fault-injection test
-AR-07	Unauthorized event or data access	Information disclosure / integrity loss	Authenticated workloads, topic ACLs, policy enforcement at data APIs, encryption	Security integration and access-denial tests
-AR-08	Incomplete provenance / observability	Poor auditability and troubleshooting	Correlation IDs, trace propagation, durable provenance records, log protection	End-to-end lineage and trace inspection
-AR-09	Microservice proliferation	Higher sustainment cost	Service-boundary review, ownership standards, deployment readiness criteria	Architecture governance review
-AR-10	Constituent lifecycle divergence	Integration regressions	Compatibility windows, adapters, published deprecation policy	Mixed-version interoperability test
+## 3.6 Decision Risks, Mitigations & Architecture Decision Record
+
+### Principal risks and controls
+
+| Risk ID |	Risk / failure mode | Consequence |	Mitigation / design control | Verification evidence |
+| --- | --- | --- | --- | --- |
+| AR-01 | Duplicate or replayed events | Repeated processing / inconsistent results | Event IDs, idempotent consumers, deduplication policy | Duplicate-delivery integration test |
+| AR-02 | Out-of-order delivery | Invalid workflow state | Partitioning/sequence policy where needed, state-machine guards | Reordering and concurrency test |
+| AR-03 | Broker or subscriber outage |	Delayed mission processing | Durable queues, replicated broker deployment, backpressure, replay | Failover and backlog-drain test |
+| AR-04 | Partial storage/catalog transaction |	Uncataloged or stale assets | Reconciliation workflow, transactional outbox where appropriate, compensating actions | Partial-failure recovery test |
+| AR-05 | API/event schema incompatibility | Broken consumers |	Versioned contracts, compatibility rules, consumer contract tests |	Contract regression test |
+| AR-06 | Distributed latency / cascading failures | Unavailable workflows | Timeouts, bounded retries, circuit breakers, bulkheads | Load and fault-injection test |
+| AR-07 | Unauthorized event or data access | Information disclosure / integrity loss |	Authenticated workloads, topic | ACLs, policy enforcement at data APIs, encryption | Security integration and access-denial tests |
+| AR-08 | Incomplete provenance / observability | Poor auditability and troubleshooting | Correlation IDs, trace propagation, durable provenance records, log protection | End-to-end lineage and trace inspection |
+| AR-09 | Microservice proliferation | Higher sustainment cost | Service-boundary review, ownership standards, deployment readiness criteria | Architecture governance review |
+| AR-10 | Constituent lifecycle divergence | Integration regressions | Compatibility windows, adapters, published deprecation policy | Mixed-version interoperability test |
 
 
-Architecture Decision Record — ADR-001
-Field	Decision record
-Title	Hybrid event-driven and service-oriented integration for MESA
-Status	Proposed / conceptual portfolio decision
-Context	Independent constituents require governed interoperability, asynchronous mission processing, authoritative access, and incremental evolution
-Decision	Use publish–subscribe for asynchronous events and modular services with governed APIs for commands, queries, and authoritative transactions
-Alternatives considered	Point-to-point, centralized hub/ESB, federated API-only, event-driven-only
-Positive consequences	Loose coupling, extensibility, independently scalable workloads, reusable capabilities, improved workflow automation
-Negative consequences	Distributed debugging, eventual consistency, messaging infrastructure dependencies, stronger governance and operations burden
-Conditions	Approved contracts and security profiles; proven recovery behavior; measurable SLOs; integration and interoperability testing
-Revisit when	Mission latency, cost, assurance, operational maturity, or constituent constraints materially change
+### Architecture Decision Record — ADR-001
+
+| Field | Decision record |
+| --- | --- |
+| Title | Hybrid event-driven and service-oriented integration for MESA |
+| Status | Proposed / conceptual portfolio decision |
+| Context |	Independent constituents require governed interoperability, asynchronous mission processing, authoritative access, and incremental evolution |
+| Decision | Use publish–subscribe for asynchronous events and modular services with governed APIs for commands, queries, and authoritative transactions |
+| Alternatives considered | Point-to-point, centralized hub/ESB, federated API-only, event-driven-only |
+| Positive consequences | Loose coupling, extensibility, independently scalable workloads, reusable capabilities, improved workflow automation |
+| Negative consequences | Distributed debugging, eventual consistency, messaging infrastructure dependencies, stronger governance and operations burden |
+| Conditions | Approved contracts and security profiles; proven recovery behavior; measurable SLOs; integration and interoperability testing |
+| Revisit when | Mission latency, cost, assurance, operational maturity, or constituent constraints materially change |
 
 
-Requirements and artifact traceability
-Decision concern	Requirement families	Supporting portfolio artifacts
-Mission integration and automated workflows	R-010, R-020	CONOPS, ACT-001, ACT-003
-Constituent autonomy	R-030	BDD-001, IFC-001
-Information exchange and contracts	R-040	IBD-001, IFC-001, DAT-001
-Provenance and lineage	R-050	Provenance model, VER-001
-Zero Trust and resilience	R-060	SEC-001, failure-mode tests
-Deployment and observability	R-070	ACT-002, operational telemetry specification
-Reporting and modernization	R-080, R-100	Report workflow, transition plan
-Verification and configuration	R-090, R-110	VER-001, baseline register
-Model synchronization and impact analysis	R-120	BDD-002, digital-thread mapping
+### Requirements and artifact traceability
+
+| Decision concern | Requirement families |	Supporting portfolio artifacts |
+| --- | --- | --- |
+| Mission integration and automated workflows | R-010, R-020 | CONOPS, ACT-001, ACT-003 |
+| Constituent autonomy | R-030 | BDD-001, IFC-001 |
+| Information exchange and contracts |	R-040 |	IBD-001, IFC-001, DAT-001 |
+| Provenance and lineage |	R-050 |	Provenance model, VER-001 |
+| Zero Trust and resilience |	R-060 |	SEC-001, failure-mode tests | 
+| Deployment and observability | R-070 |	ACT-002, operational telemetry specification |
+| Reporting and modernization |	R-080, R-100 |	Report workflow, transition plan |
+| Verification and configuration |	R-090, R-110 |	VER-001, baseline register |
+| Model synchronization and impact analysis | R-120 | BDD-002, digital-thread mapping |
 
 
-Exit criteria before declaring the decision baselined
+### Exit criteria before declaring the decision baselined
 - [ ] Mission stakeholders approve evaluation criteria and weights.
 - [ ] Operational and performance constraints are quantified (e.g., latency, throughput, availability, recovery).
 - [ ] Architecture authority reviews service boundaries and trust boundaries.
@@ -192,7 +203,8 @@ Exit criteria before declaring the decision baselined
 - [ ] Critical risks have defined test cases and owners in VER-001.
 - [ ] A sensitivity analysis and at least one representative integration prototype have been completed.
 - [ ] Architecture decision record is reviewed and configuration-controlled.
-References and Standards Context
+
+# References and Standards Context
 The following sources inform architectural principles and technical governance. They do not validate the illustrative numerical scores above.
 1. Maier, M. W. (1998). Architecting principles for systems-of-systems. Systems Engineering, 1(4), 267–284. https://doi.org/10.1002/(SICI)1520-6858(1998)1:4%3C267::AID-SYS3%3E3.0.CO;2-D
 2. ISO/IEC/IEEE 42010:2022. Software, systems and enterprise — Architecture description. https://www.iso.org/standard/74393.html
