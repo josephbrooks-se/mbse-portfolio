@@ -15,25 +15,25 @@ SYS-001 — Integrated Mission Information System-of-Systems coordinates mission
 | Element ID	| Logical subsystem / capability |	Primary responsibility |
 | --- | --- | --- |
 | SYS-001 |	Integrated Mission Information SoS |	Enterprise mission integration boundary |
-| SYS-010 |	Enterprise Data Hub	Governed data management and access |
-| SYS-011 |	Enterprise Data Catalog	Metadata registration, discovery and authoritative asset records |
-| SYS-012 |	Object Storage	Durable storage of mission objects and derived products |
-| SYS-020 |	Shared Enterprise Services	Common integration and enterprise functions |
-| SYS-021 |	Identity, Credential and Access Management (ICAM)	Identity, credentials and policy-supporting identity attributes |
-| SYS-022 |	Ingestion & Interoperability	Source adapters, validation and normalization |
-| SYS-023 |	Workflow Orchestration	Task coordination and execution-state management |
-| SYS-024 |	Analytics & AI	Governed analytical processing capabilities |
-| SYS-025 |	Provenance & Evidence	Processing history, lineage and evidence records |
-| SYS-030 |	Mission Applications	User-facing task initiation, discovery and results |
-| SYS-040 |	Zero-Trust Security	Policy enforcement and protected enterprise interactions |
-| SYS-050 |	Observability	Metrics, logs, traces, health and alerting |
-| SYS-060 |	DevSecOps	Secure build, delivery and deployment automation |
-| SYS-070 |	Cloud / Runtime Infrastructure	Hosting, network and runtime foundation |
-| SYS-080 |	Enterprise Report Authoring & Dissemination	Product composition, review, approval and release |
-| SYS-090 |	Reliability & Security Validation	Test, assurance and resilience validation capability |
-| SYS-100 |	Sustainment	Operations support and controlled maintenance |
-| SYS-110 |	Configuration Management	Approved baselines, change records and version control |
-| SYS-120 |	Digital Twin / Architecture Analytics	Model-state correlation, gap and impact analysis |
+| SYS-010 |	Enterprise Data Hub	| Governed data management and access |
+| SYS-011 |	Enterprise Data Catalog	| Metadata registration, discovery and authoritative asset records |
+| SYS-012 |	Object Storage	| Durable storage of mission objects and derived products |
+| SYS-020 |	Shared Enterprise Services	| Common integration and enterprise functions |
+| SYS-021 |	Identity, Credential and Access Management (ICAM)	| Identity, credentials and policy-supporting identity attributes |
+| SYS-022 |	Ingestion & Interoperability	| Source adapters, validation and normalization |
+| SYS-023 |	Workflow Orchestration	| Task coordination and execution-state management |
+| SYS-024 |	Analytics & AI	| Governed analytical processing capabilities |
+| SYS-025 |	Provenance & Evidence	| Processing history, lineage and evidence records |
+| SYS-030 |	Mission Applications	| User-facing task initiation, discovery and results |
+| SYS-040 |	Zero-Trust Security	| Policy enforcement and protected enterprise interactions |
+| SYS-050 |	Observability	| Metrics, logs, traces, health and alerting |
+| SYS-060 |	DevSecOps	| Secure build, delivery and deployment automation |
+| SYS-070 |	Cloud / Runtime Infrastructure	| Hosting, network and runtime foundation |
+| SYS-080 |	Enterprise Report Authoring & Dissemination	| Product composition, review, approval and release |
+| SYS-090 |	Reliability & Security Validation	| Test, assurance and resilience validation capability |
+| SYS-100 |	Sustainment	| Operations support and controlled maintenance |
+| SYS-110 |	Configuration Management	| Approved baselines, change records and version control |
+| SYS-120 |	Digital Twin / Architecture Analytics	| Model-state correlation, gap and impact analysis |
 
 
 ### Hierarchical ownership convention
