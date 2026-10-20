@@ -107,8 +107,8 @@ Assumptions requiring validation
 ## 2.6 Measures of Effectiveness (MOEs)
 Measures of Effectiveness evaluate whether MESA improves the mission outcome. Supporting Measures of Performance (MOPs) and technical performance measures (TPMs) will be derived during requirements and verification planning. No numerical targets are asserted in this conceptual baseline.
 
-|MOE ID	| Mission outcome |	Candidate measure	| Evaluation approach |	Target
-| --- | --- | --- |
+|MOE ID	| Mission outcome |	Candidate measure	| Evaluation approach |	Target |
+| --- | --- | --- | --- |--- |
 | MOE-01 |	Faster availability of usable mission information | Elapsed time from source availability to catalog discoverability |	Timed end-to-end operational scenario |	TBD by stakeholders |
 | MOE-02	| Reduced manual integration and processing effort |	Human interventions per completed processing workflow	Compare baseline and proposed workflow execution |	TBD |
 | MOE-03 |	Improved information discoverability |	Proportion of eligible governed assets discoverable by authorized users	| Catalog coverage and user task testing |	TBD |
