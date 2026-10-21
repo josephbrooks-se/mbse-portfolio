@@ -3,7 +3,7 @@
 Project: MESA — Mission Enterprise Services Architecture  
 Artifact: MESA-IFD-001 | Status: Proposed conceptual baseline — review required  
 Related artifacts: Executive Overview · CONOPS · Trade Study · Requirements · Logical Architecture · Behavioral Architecture
-> **Portfolio disclaimer:** MESA is a fictional, unclassified reference architecture. All interfaces, schemas, event topics, roles, thresholds, and identifiers below are illustrative engineering examples—not descriptions of operational government or employer systems. This document uses Mermaid to depict conceptual interfaces; these are **not formal SysML IBDs** until modeled and validated in a SysML tool.
+Portfolio disclaimer: MESA is a fictional, unclassified reference architecture. All interfaces, schemas, event topics, roles, thresholds, and identifiers below are illustrative engineering examples—not descriptions of operational government or employer systems. This document uses Mermaid to depict conceptual interfaces; these are **not formal SysML IBDs** until modeled and validated in a SysML tool.
 
 ## 6.1 Enterprise Internal Block Diagram — IBD-001
 
