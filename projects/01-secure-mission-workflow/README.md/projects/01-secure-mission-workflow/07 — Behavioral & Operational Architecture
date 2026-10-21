@@ -1,0 +1,323 @@
+7. Behavioral & Operational Architecture
+Project: MESA — Mission Enterprise Services Architecture
+Artifact: MESA-BHV-001 | Status: Proposed conceptual baseline — review required
+Related artifacts: [CONOPS](02-Concept-of-Operations.md) · [Requirements](04-Requirements-Engineering.md) · [Logical Architecture](05-Logical-Architecture.md) · [Interface & Data Architecture](06-Interface-Architecture.md)
+Portfolio disclaimer: All workflows, events, timing assumptions, actors, and decisions are hypothetical, unclassified examples. Mermaid diagrams show intended behavior but are not formal SysML activity or sequence models. They must be reviewed, modeled, and verified before being considered an engineering baseline.
+
+7.1 Mission Workflow Activity Diagram — ACT-001
+Objective
+Show the operational thread from an authorized analyst's task request through governed discovery, automated analysis, human review, and dissemination. The architecture distinguishes automated processing from human analytical judgment and release authority.
+```mermaid
+flowchart TD
+  A([Analyst initiates mission request]) --> B[Authenticate and authorize request]
+  B --> C{Authorized?}
+  C -->|No| D[Reject and audit] --> END1([End])
+  C -->|Yes| E[Discover authorized catalog assets]
+  E --> F{Suitable data available?}
+  F -->|No| G[Notify analyst / await approved input] --> END2([Pending / end])
+  F -->|Yes| H[Create workflow execution]
+  H --> I[Dispatch analytical processing]
+  I --> J{Processing successful?}
+  J -->|No| K[Recovery / escalation workflow] --> END3([Failed or resumed])
+  J -->|Yes| L[Register result and provenance]
+  L --> M[Compose draft report]
+  M --> N[Analyst reviews findings]
+  N --> O{Approved for release?}
+  O -->|No| P[Revise / reject / retain draft] --> N
+  O -->|Yes| Q[Validate recipients and release policy]
+  Q --> R{Release authorized?}
+  R -->|No| S[Block release and audit] --> END4([End])
+  R -->|Yes| T[Disseminate approved product]
+  T --> U[Archive approval and delivery evidence] --> END5([Complete])
+```
+ACT-001 activity specification
+Step	Responsible actor/service	Input	Output / state	Requirement mapping
+1. Request mission task	Mission analyst / SYS-030	Task parameters	Submitted request	R-010.1, R-010.4
+2. Authorize request	SYS-021 / SYS-040	User identity, policy, context	Permit or deny	R-060.1, R-060.2
+3. Discover data	SYS-011	Search criteria and permissions	Authorized asset references	R-040.3, R-060.2
+4. Execute workflow	SYS-023	Workflow template and asset IDs	Execution state	R-020.4, R-010.3
+5. Perform analysis	SYS-024	Authorized data references	Result object and status	R-010.3, R-050.3
+6. Register lineage	SYS-025 / SYS-011	Processing evidence	Provenance and result metadata	R-050.1–R-050.4
+7. Review report	SYS-080 / analyst	Draft report	Approved/rejected state	R-080.1–R-080.3
+8. Disseminate	SYS-080	Approved product and recipient policy	Delivery receipt	R-080.4
+
+
+Control point: Workflow completion does not imply approval to disseminate. Human review and release authorization remain explicit steps.
+7.2 DevSecOps Deployment & Fielding Activity — ACT-002
+Objective
+Demonstrate how independently deployable enterprise components progress through controlled build, verification, approval, deployment, and rollback. This is a proposed process, not evidence of an existing CI/CD pipeline.
+```mermaid
+flowchart TD
+  A([Approved change request]) --> B[Update code, model, and interface contract]
+  B --> C[Peer review and commit]
+  C --> D[Automated build and unit tests]
+  D --> E[Dependency / container / policy scans]
+  E --> F{Quality and security gates pass?}
+  F -->|No| G[Reject build; remediate] --> B
+  F -->|Yes| H[Publish versioned and signed artifact]
+  H --> I[Deploy to integration environment]
+  I --> J[Contract, integration, security and regression tests]
+  J --> K{Acceptance criteria met?}
+  K -->|No| L[Rollback / fix / re-test] --> B
+  K -->|Yes| M[Change approval and baseline update]
+  M --> N[Controlled deployment / canary where appropriate]
+  N --> O[Monitor health and mission indicators]
+  O --> P{Deployment healthy?}
+  P -->|No| Q[Rollback and incident record] --> END1([Restored / investigated])
+  P -->|Yes| R[Record release evidence and provenance] --> END2([Fielded])
+```
+Gate	Minimum evidence	Related requirements
+Design review	Approved change, model/contract impact analysis	R-040.1, R-110.3
+Build gate	Reproducible artifact, unit test result, software inventory	R-070.1, R-070.2
+Security gate	Approved vulnerability/policy results and exceptions	R-060.1–R-060.3
+Integration gate	API/event contract and workflow regression tests	R-090.2, R-090.3
+Release gate	Authorized deployment and rollback plan	R-100.4, R-110.4
+Operations gate	Health, telemetry, alert and incident evidence	R-070.3, R-070.4
+
+
+7.3 Ingestion & Validation Activity — ACT-003
+Objective
+Represent event-triggered ingestion with secure source access, schema validation, transformation, object persistence, catalog registration, and failure handling.
+```mermaid
+flowchart TD
+  A([Observation notification received]) --> B[Validate event contract and publisher identity]
+  B --> C{Valid and authorized?}
+  C -->|No| D[Reject, audit, and quarantine event] --> END1([Rejected])
+  C -->|Yes| E[Check event ID / ingestion idempotency key]
+  E --> F{Previously processed?}
+  F -->|Yes| G[Return prior receipt / no duplicate processing] --> END2([Duplicate handled])
+  F -->|No| H[Retrieve source object with separate authorization]
+  H --> I{Object available and authorized?}
+  I -->|No| J[Retry or escalate per failure classification] --> END3([Pending / failed])
+  I -->|Yes| K[Validate source schema and metadata]
+  K --> L{Valid data?}
+  L -->|No| M[Quarantine; record reason and provenance] --> END4([Rejected data])
+  L -->|Yes| N[Normalize to canonical model]
+  N --> O[Persist immutable or versioned data asset]
+  O --> P[Register metadata in enterprise catalog]
+  P --> Q{Registration committed?}
+  Q -->|No| R[Reconcile and retry registration] --> P
+  Q -->|Yes| S[Record lineage and publish asset-registered event]
+  S --> T[Commit ingestion completion / checkpoint] --> END5([Available for workflows])
+```
+Ingestion acceptance examples
+ID	Given	When	Then
+AC-ING-01	Authorized source and conformant event	Event arrives	Ingestion creates a correlated receipt
+AC-ING-02	Event ID already processed	Duplicate is delivered	No duplicate asset is created; prior outcome is retrievable
+AC-ING-03	Data fails schema validation	Validation executes	Data is quarantined with a recorded reason
+AC-ING-04	Object is stored but catalog registration fails	Reconciliation executes	Registration is retried without duplicating the stored object
+AC-ING-05	Metadata registration succeeds	Registration transaction completes	A governed asset-registered event is published
+
+
+Architectural caveat: Retry loops shown here are bounded by policy. After retry exhaustion, processing transitions to an exception or operator-reconciliation state rather than retrying indefinitely.
+7.4 Analytics & Report Authoring Activity — ACT-004
+```mermaid
+flowchart TD
+  A([Authorized workflow requests analysis]) --> B[Resolve and authorize source asset references]
+  B --> C[Select approved processor and version]
+  C --> D[Dispatch analytical job]
+  D --> E{Job complete?}
+  E -->|No - running| F[Update progress / monitor timeout] --> E
+  E -->|Failed| G[Apply recovery / notify analyst] --> END1([Exception])
+  E -->|Yes| H[Persist result and processing evidence]
+  H --> I[Register result in catalog]
+  I --> J[Create report draft using approved template]
+  J --> K[Validate content, metadata and markings]
+  K --> L{Draft conforms?}
+  L -->|No| M[Return to author for correction] --> J
+  L -->|Yes| N[Analyst / approver review]
+  N --> O{Approved?}
+  O -->|No| P[Revise or reject] --> J
+  O -->|Yes| Q[Evaluate release policy and recipients]
+  Q --> R{Authorized to release?}
+  R -->|No| S[Block and audit] --> END2([Not released])
+  R -->|Yes| T[Disseminate and record receipt] --> END3([Complete])
+```
+Behavior	Automation boundary	Human responsibility	Requirement
+Select processor	System uses approved template/configuration	Engineering approves available processing capability	R-020.4, R-110.2
+Execute analysis	Job adapter monitors and records results	Analyst interprets significance	R-010.3, R-050.3
+Generate report	System populates approved fields and references	Author validates narrative and conclusions	R-080.1, R-080.2
+Approve release	System enforces workflow and authorization	Authorized approver accepts accountability	R-080.3, R-060.2
+Deliver product	System distributes to approved destinations	Release authority defines recipients/policy	R-080.4
+
+
+7.5 Failure Handling & Recovery Activity — ACT-005
+Failure taxonomy
+Failure	Detection	Immediate response	Recovery / assurance
+Invalid or unauthorized event	Schema and authorization check	Reject, audit	Correct producer contract or permission; do not auto-bypass
+Duplicate event	Event ID/idempotency record	Return prior outcome	Confirm no duplicate side effects
+Temporary source outage	Retrieval timeout / health signal	Retry with backoff	Resume from checkpoint or escalate
+Transformation failure	Processor exception / invalid output	Quarantine input/output	Correct mapping; preserve evidence
+Object stored, catalog unavailable	Registration failure	Mark asset not yet discoverable	Reconciliation and eventual registration
+Event broker outage	Publish/subscribe health failure	Buffer through approved durable mechanism	Resume/replay; verify completeness
+Analytical service timeout	Job deadline exceeded	Transition to exception state	Retry only if safe; otherwise operator decision
+Policy decision unavailable	PDP / enforcement health failure	Deny protected action by default	Restore policy service; audit outage
+Report release denied	Approval/recipient policy	Block dissemination	Request proper approval; retain record
+Deployment regression	Health/SLO degradation	Stop rollout	Rollback to approved version; incident review
+
+
+```mermaid
+flowchart TD
+  A([Failure detected]) --> B[Correlate event, workflow, and asset IDs]
+  B --> C{Security or policy violation?}
+  C -->|Yes| D[Fail closed; deny, preserve evidence, alert] --> END1([Security investigation])
+  C -->|No| E{Transient and retry-safe?}
+  E -->|Yes| F[Bounded retry with backoff]
+  F --> G{Recovered?}
+  G -->|Yes| H[Resume from checkpoint; validate integrity] --> END2([Recovered])
+  G -->|No| I[Dead-letter / exception queue]
+  E -->|No| I
+  I --> J[Notify operator and record incident]
+  J --> K{Approved manual recovery?}
+  K -->|Yes| L[Reconcile state / controlled replay] --> H
+  K -->|No| M[Retain failed state and evidence] --> END3([Await resolution])
+```
+Required recovery properties
+- Idempotency: Duplicate messages or retried commands do not create unintended duplicate effects.
+- Bounded retry: Timeouts, backoff, and maximum attempts are specified by interface.
+- Checkpoints: Durable state enables resumption without restarting an entire mission workflow unnecessarily.
+- Compensation: Where a multi-service action cannot be atomic, use explicit reconciliation or compensating steps.
+- Auditability: Failure, intervention, and recovery actions retain traceable records.
+- Fail-safe security: Unavailable policy enforcement does not authorize protected operations.
+- Operational metrics: Recovery time and data completeness targets are defined and approved before verification.
+7.6 Operational Sequence Diagrams
+Sequence A — Collection to governed catalog registration
+```mermaid
+sequenceDiagram
+  autonumber
+  participant C as Collection Adapter
+  participant B as Event Broker
+  participant I as Ingestion Service
+  participant Z as Authorization
+  participant O as Object Storage
+  participant K as Data Catalog
+  participant P as Provenance Service
+  C->>B: Publish observation.available(event ID, asset reference)
+  B-->>I: Deliver authorized subscription event
+  I->>I: Validate envelope and deduplicate
+  I->>Z: Authorize object retrieval
+  Z-->>I: Permit / deny
+  alt Authorized and valid
+    I->>C: Retrieve authorized source payload
+    C-->>I: Payload + source metadata
+    I->>I: Validate and normalize
+    I->>O: Store versioned object
+    O-->>I: Object reference
+    I->>K: Register metadata
+    K-->>I: Registration committed
+    I->>P: Record source / transformation lineage
+    K->>B: Publish catalog.asset.registered
+  else Denied or invalid
+    I->>P: Record rejection evidence as authorized
+    I-->>B: Negative outcome / controlled exception
+  end
+```
+Sequence B — Mission task to analytical report
+```mermaid
+sequenceDiagram
+  autonumber
+  actor A as Mission Analyst
+  participant M as Mission Application
+  participant Z as Authorization
+  participant K as Data Catalog
+  participant W as Workflow Service
+  participant N as Analytics Service
+  participant R as Report Service
+  A->>M: Submit analytical request
+  M->>Z: Authorize task submission
+  Z-->>M: Permit / deny
+  M->>K: Discover authorized assets
+  K-->>M: Governed asset references
+  M->>W: Create workflow(template, asset IDs)
+  W-->>M: Accepted + workflow ID
+  W->>N: Dispatch analytical job
+  N-->>W: Completion + result reference
+  W->>R: Initiate draft report
+  R-->>A: Present draft for review
+  A->>R: Approve / request changes
+  alt Approved and release authorized
+    R->>R: Verify markings, recipients, release policy
+    R-->>A: Dissemination receipt
+  else Not approved
+    R-->>A: Retain draft / request revision
+  end
+```
+Sequence C — Deployment with rollback
+```mermaid
+sequenceDiagram
+  autonumber
+  actor E as Engineer
+  participant G as Version Control / CI
+  participant S as Security & Test Gates
+  participant D as Deployment Controller
+  participant O as Observability
+  participant CM as Configuration Management
+  E->>G: Submit approved change
+  G->>S: Build artifact and run checks
+  S-->>G: Test / scan results
+  alt Gates pass
+    G->>CM: Register approved version
+    CM-->>D: Authorize controlled deployment
+    D->>O: Deploy and observe release
+    O-->>D: Health / performance indicators
+    alt Healthy
+      D-->>CM: Record successful deployment state
+    else Degraded
+      D->>D: Roll back to prior approved version
+      D-->>CM: Record rollback and incident
+    end
+  else Gates fail
+    G-->>E: Reject build; remediate
+  end
+```
+State model for mission workflow
+```mermaid
+stateDiagram-v2
+  [*] --> Submitted
+  Submitted --> Rejected: authorization denied
+  Submitted --> Accepted: authorized
+  Accepted --> Running: resources ready
+  Running --> Waiting: external dependency
+  Waiting --> Running: dependency restored
+  Running --> Completed: all required tasks pass
+  Running --> Failed: unrecoverable error
+  Running --> Cancelled: authorized cancellation
+  Failed --> Running: approved controlled replay
+  Completed --> [*]
+  Rejected --> [*]
+  Cancelled --> [*]
+```
+Traceability crosswalk
+Requirement	Behavior	Expected verification evidence
+R-010.1–R-010.4	ACT-001; Sequence B	Authorized mission task end-to-end demonstration
+R-020.1–R-020.4	ACT-003; Sequence A	Ingestion, validation, workflow trigger tests
+R-040.1–R-040.4	ACT-001–ACT-004; Sequences A/B	API and event contract conformance
+R-050.1–R-050.4	ACT-003/ACT-004	Lineage reconstruction test
+R-060.1–R-060.4	ACT-001/ACT-003/ACT-005	Access-denial, protected retrieval, outage tests
+R-070.1–R-070.4	ACT-002; Sequence C	CI/CD gate and observability evidence
+R-080.1–R-080.4	ACT-004; Sequence B	Review/approval/release authorization tests
+R-090.1–R-090.4	All activities	Requirements-to-test matrix
+R-100.4, R-110.1–R-110.4	ACT-002; Sequence C	Baseline, deployment and rollback records
+
+
+Behavioral assumptions, decisions, and open issues
+ID	Item	Status
+D-BHV-01	Analytical jobs are asynchronous when long-running	Proposed
+D-BHV-02	Workflow state is authoritative in orchestration service	Proposed
+D-BHV-03	Data availability is announced only after successful catalog registration	Proposed
+D-BHV-04	Human review and release authorization are explicit gates	Proposed
+O-BHV-01	Define approved processing time, workflow completion, and recovery targets	Open
+O-BHV-02	Specify exact event delivery semantics and deduplication retention	Open
+O-BHV-03	Confirm workflow cancellation and compensation semantics	Open
+O-BHV-04	Confirm report approval authority and dissemination policy	Open
+
+
+Definition of done for Section 7
+- [x] Conceptual mission, deployment, ingestion, reporting, and recovery activities drafted.
+- [x] Three operational sequence diagrams and a workflow state model drafted.
+- [x] Initial acceptance examples and requirements traceability drafted.
+- [ ] Operational stakeholders validate scenarios, exceptions, and human decision points.
+- [ ] Formal SysML behavioral models are developed and reviewed.
+- [ ] Quantitative timing, availability, recovery, and throughput criteria are approved.
+- [ ] End-to-end, failure-injection, and security tests produce verification evidence.
+Readiness: Draft complete; not an approved or verified behavioral baseline.
