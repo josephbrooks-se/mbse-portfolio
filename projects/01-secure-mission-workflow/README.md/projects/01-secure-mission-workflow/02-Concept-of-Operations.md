@@ -79,7 +79,42 @@ Expected outcome: Access controls remain effective across synchronous APIs, even
 
 ## 2.4 System Context Diagram
 The diagram defines the operational boundary, not the internal implementation of every constituent system. Mermaid renders directly in supported GitHub Markdown views.
+```mermaid
+flowchart LR
+    CS[Independent Collection Systems]
+    IA[Mission Analysts]
+    RA[Report Authors / Approvers]
+    DM[Authorized Decision-Makers]
+    ID[Enterprise Identity & Policy Authority]
+    DE[Approved Dissemination Endpoints]
 
+    subgraph MESA[Project MESA — SoS Integration Boundary]
+        APP[Mission Applications]
+        ING[Ingestion & Interoperability]
+        EVT[Event Broker]
+        HUB[Data Storage & Catalog]
+        WF[Workflow & Analytics]
+        REP[Report Authoring & Dissemination]
+        GOV[Security Enforcement / Provenance / Observability]
+    end
+
+    CS -->|Approved source interface| ING
+    ING -->|Events| EVT
+    ING -->|Validated data and metadata| HUB
+    EVT -->|Availability and processing events| WF
+    APP -->|Authorized queries and commands| HUB
+    APP -->|Task initiation and status| WF
+    WF -->|Approved analytical results| REP
+    IA --> APP
+    RA --> REP
+    REP -->|Approved products| DE
+    DE --> DM
+    ID <-->|Identity and policy integration| GOV
+    GOV -.-> ING
+    GOV -.-> APP
+    GOV -.-> WF
+    GOV -.-> REP
+```
 Boundary interpretation: MESA owns the conceptual enterprise integration responsibilities shown within the boundary. Collection systems, identity/policy authorities, recipients, and external dissemination endpoints may remain under separate governance. Trust and authorization decisions must be enforced at each protected interaction; the diagram does not imply that all traffic passes through one security service.
 
 ## 2.5 Operational Constraints & Assumptions
